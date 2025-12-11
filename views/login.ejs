@@ -1,0 +1,103 @@
+<%- include('partials/header') %>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-sign-in-alt me-2"></i> Student Login</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <% if (locals.error) { %>
+                            <div class="alert alert-danger">
+                                <%= error %>
+                            </div>
+                            <% } %>
+                                <% if (locals.success) { %>
+                                    <div class="alert alert-success">
+                                        <%= success %>
+                                    </div>
+                                    <% } %>
+
+                                        <form action="/login" method="POST" id="loginForm">
+                                            <input type="hidden" name="csrf_token"
+                                                value="<%= locals.csrfToken || '' %>">
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Email Address</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i
+                                                            class="fas fa-envelope"></i></span>
+                                                    <input type="email" class="form-control" name="email" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Password</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                                    <input type="password" class="form-control" name="password"
+                                                        id="password" required>
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                        id="togglePassword">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" id="rememberMe"
+                                                    name="remember">
+                                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                                            </div>
+
+                                            <div class="d-grid mb-3">
+                                                <button type="submit" class="btn btn-primary">Login</button>
+                                            </div>
+
+                                            <div class="text-center">
+                                                <a href="/forgot-password" class="text-decoration-none">Forgot
+                                                    Password?</a>
+                                            </div>
+                                        </form>
+
+                                        <hr class="my-4">
+
+                                        <div class="text-center">
+                                            <p class="mb-2">Don't have an account?</p>
+                                            <a href="/register" class="btn btn-outline-primary">Register Now</a>
+                                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="/" class="text-decoration-none"><i class="fas fa-home me-1"></i> Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Prevent form resubmission on page refresh
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+
+    <%- include('partials/footer') %>

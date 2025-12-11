@@ -1,0 +1,249 @@
+<%- include('partials/header') %>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 col-xl-2">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="/uploads/<%= student.pp_photo || 'default.png' %>" alt="Profile Photo"
+                            class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h5 class="card-title">
+                            <%= student.name %>
+                        </h5>
+                        <p class="text-muted">
+                            <%= student.id %>
+                        </p>
+                        <div class="d-grid">
+                            <a href="/profile" class="btn btn-outline-primary">Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Quick Links</h6>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="/dashboard" class="list-group-item list-group-item-action active">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                        <a href="/resources" class="list-group-item list-group-item-action">
+                            <i class="fas fa-book me-2"></i> Study Resources
+                        </a>
+                        <a href="/profile" class="list-group-item list-group-item-action">
+                            <i class="fas fa-user me-2"></i> My Profile
+                        </a>
+                        <a href="/logout" class="list-group-item list-group-item-action text-danger">
+                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-xl-10">
+                <!-- Welcome Message -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3 class="card-title">Welcome back, <%= student.name.split(' ')[0] %>!</h3>
+                                <p class="card-text text-muted">Here' s what's happening with your account today.</p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <span class="badge bg-success">Account Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card text-white bg-primary">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title">Total Downloads</h6>
+                                        <h2 class="mb-0">
+                                            <%= download_count %>
+                                        </h2>
+                                    </div>
+                                    <i class="fas fa-download fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <div class="card text-white bg-success">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title">Available Resources</h6>
+                                        <h2 class="mb-0">
+                                            <%= total_resources %>
+                                        </h2>
+                                    </div>
+                                    <i class="fas fa-book fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <div class="card text-white bg-info">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title">Last Login</h6>
+                                        <h5 class="mb-0">
+                                            <%= student.last_login ? new Date(student.last_login).toLocaleString()
+                                                : 'Never' %>
+                                        </h5>
+                                    </div>
+                                    <i class="fas fa-sign-in-alt fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Downloads and Announcements -->
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Recent Downloads</h5>
+                                <a href="/resources" class="btn btn-sm btn-outline-primary">View All</a>
+                            </div>
+                            <div class="card-body">
+                                <% if (recent_downloads && recent_downloads.length> 0) { %>
+                                    <div class="list-group list-group-flush">
+                                        <% recent_downloads.forEach(function(download) { %>
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1">
+                                                            <%= download.title %>
+                                                        </h6>
+                                                        <small class="text-muted">
+                                                            <%= new Date(download.downloaded_at).toLocaleString() %>
+                                                        </small>
+                                                    </div>
+                                                    <span class="badge bg-primary">Downloaded</span>
+                                                </div>
+                                            </div>
+                                            <% }); %>
+                                    </div>
+                                    <% } else { %>
+                                        <p class="text-muted text-center py-3">No downloads yet. Start exploring
+                                            resources!</p>
+                                        <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">Latest Announcements</h5>
+                            </div>
+                            <div class="card-body">
+                                <% if (announcements && announcements.length> 0) { %>
+                                    <div class="list-group list-group-flush">
+                                        <% announcements.forEach(function(announcement) { %>
+                                            <div class="list-group-item">
+                                                <h6 class="mb-1">
+                                                    <%= announcement.title %>
+                                                </h6>
+                                                <p class="mb-1 small">
+                                                    <%= announcement.content.substring(0, 100) + '...' %>
+                                                </p>
+                                                <small class="text-muted">
+                                                    <%= new Date(announcement.created_at).toLocaleDateString() %>
+                                                </small>
+                                            </div>
+                                            <% }); %>
+                                    </div>
+                                    <% } else { %>
+                                        <p class="text-muted text-center py-3">No announcements available.</p>
+                                        <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Upcoming Events</h5>
+                    </div>
+                    <div class="card-body">
+                        <% if (events && events.length> 0) { %>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Event</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Venue</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% events.forEach(function(event) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= event.title %>
+                                                </td>
+                                                <td>
+                                                    <%= new Date(event.event_date).toLocaleDateString() %>
+                                                </td>
+                                                <td>
+                                                    <%= event.event_time %>
+                                                </td>
+                                                <td>
+                                                    <%= event.venue %>
+                                                </td>
+                                                <td><span class="badge bg-info">
+                                                        <%= event.event_type %>
+                                                    </span></td>
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <% } else { %>
+                                <p class="text-muted text-center py-3">No upcoming events scheduled.</p>
+                                <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto logout after inactivity (Simulated)
+        let timeout;
+        const timeoutDuration = Number('<%= locals.SESSION_TIMEOUT || 1800 %>') * 1000;
+
+        function resetTimer() {
+            clearTimeout(timeout);
+            timeout = setTimeout(logout, timeoutDuration);
+        }
+
+        function logout() {
+            window.location.href = '/logout';
+        }
+
+        document.addEventListener('mousemove', resetTimer);
+        document.addEventListener('keypress', resetTimer);
+        document.addEventListener('click', resetTimer);
+
+        resetTimer();
+    </script>
+
+    <%- include('partials/footer') %>
