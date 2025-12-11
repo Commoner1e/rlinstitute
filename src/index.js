@@ -7,7 +7,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import About from "./pages/About";
 import Course from "./pages/Course";
 import Faculty from "./pages/Faculty";
-
+import Admission from "./pages/Admission";
+import Contact from "./pages/Contact";
+import Login from "./pages/Login";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
@@ -30,6 +32,18 @@ const router = createBrowserRouter([
   {
     path: "Faculty",
     element: <Faculty/>
+  },
+  {
+    path: "Admission",
+    element: <Admission/>
+  },
+  {
+    path: "Contact",
+    element: <Contact/>
+  },
+  {
+    path: "Login",
+    element: <Login/>
   }
 
 ]);
